@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<list>
+
+    <item xml:lang="ru" name="кфмн" value="к.ф-м.н." />
+    <item xml:lang="en" name="кфмн" value="PhD" />
+    <item xml:lang="ru" name="к.ф-м.н." value="к.ф-м.н." />
+    <item xml:lang="en" name="к.ф-м.н." value="PhD" />
+
+    <item xml:lang="ru" name="ктн" value="к.т.н." />
+    <item xml:lang="en" name="ктн" value="PhD" />
+    <item xml:lang="ru" name="к.т.н." value="к.т.н." />
+    <item xml:lang="en" name="к.т.н." value="PhD" />
+
+    <item xml:lang="ru" name="кбн" value="к.б.н." />
+    <item xml:lang="en" name="кбн" value="PhD" />
+    <item xml:lang="ru" name="к.б.н." value="к.б.н." />
+    <item xml:lang="en" name="к.б.н." value="PhD" />
+
+    <item xml:lang="ru" name="кэн" value="к.э.н." />
+    <item xml:lang="en" name="кэн" value="PhD" />
+    <item xml:lang="ru" name="к.э.н." value="к.э.н." />
+    <item xml:lang="en" name="к.э.н." value="PhD" />
+
+    <item xml:lang="ru" name="кфилн" value="к.фил.н." />
+    <item xml:lang="en" name="кфилн" value="PhD" />
+    <item xml:lang="ru" name="к.фил.н." value="к.фил.н." />
+    <item xml:lang="en" name="к.фил.н." value="PhD" />
+
+    <item xml:lang="ru" name="дфмн" value="д.ф-м.н." />
+    <item xml:lang="en" name="дфмн" value="D.Sc." />
+    <item xml:lang="ru" name="д.ф-м.н." value="д.ф-м.н." />
+    <item xml:lang="en" name="д.ф-м.н." value="D.Sc." />
+
+    <item xml:lang="ru" name="дтн" value="д.т.н." />
+    <item xml:lang="en" name="дтн" value="D.Sc." />
+    <item xml:lang="ru" name="д.т.н." value="д.т.н." />
+    <item xml:lang="en" name="д.т.н." value="D.Sc." />
+
+</list>
