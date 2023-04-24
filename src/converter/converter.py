@@ -1,61 +1,126 @@
+﻿# -----------------------------------------------------------
+# Преобразователь XML->MD->HTML
+#
+# (C) 2023 Alisa Haidarova, PetrGU, Petrozavodsk, Russia
+# License: GNU General Public License (GPL)
+# Email: i.nesy.chav@gmail.com
+# -----------------------------------------------------------
+
 import argparse
 import os
 
+import ConverterInHtml as fromMd
+import xml_to_markdown as fromXml
+
+# Обозначение ключей
+#
+# -d, --directory    Выбор директории, из которой требуется преобразовать файлы
+# -x, --xml          Преобразование из XML в MarkDown
+# -m, --markdown     Преобразование из MarkDown в HTML
+# -a, --another      Выбор директории, в которую требуется сохранить преобразованные файлы
 
 parser = argparse.ArgumentParser (prog='converter', description='File format conversion')
 parser.add_argument('-d', '--directory', help='Input directory', nargs=1, required=True)
 parser.add_argument('-x', '--xml', help='File type', action='store_true', required=False)
 parser.add_argument('-m', '--markdown', help='File type', action='store_true', required=False)
 parser.add_argument('-a', '--another', help='Output directory', nargs=1, required=False)
-args = parser.parse_args()
 
 
-def get_change_file(path_f, name_f, type_f):
-    new_f = os.path.join(path_f, name_f)
+"""
+   Сравненивает даты последнего изменения исходного файла 
+   и преобразованного, если тот существует
+
+   Parameters
+   ----------
+   full_path : str
+         полный путь до исходного файла
+   new_path : str
+         полный путь до преобразованного файла
+
+   Return
+   ----------
+   True : bool
+         Если файл требует преобразования
+   False : bool
+         Если файл не требует преобразования
+"""
+def file_changed(full_path, new_path):
+    
+    if not os.path.exists(new_path):
+        return True
+    return os.path.getmtime(full_path) > os.path.getmtime(new_path)
+
+
+"""
+   Перебирает исходную директорию и передает файлы
+   указанного формата в соответствующий модуль преобразования
+
+   Parameters
+   ----------
+   pathFrom : str
+         исходная директория
+   pathTo : str
+         директория для сохранения
+   type_f : str
+         тип файла для преобразования
+"""
+def find_files(pathFrom, pathTo, type_f):
+
+    for rootdir, dirs, files in os.walk(pathFrom):
+        for f in files:       
+            if not (f.split('.')[-1]) == type_f:
+                continue
+
+            full_path = os.path.join(rootdir, f)
+            new_type_f = 'md' if type_f == 'xml' else 'html'
+            new_path = full_path.replace(pathFrom, pathTo).replace(type_f, new_type_f)
+
+            if not file_changed(full_path, new_path):
+                print(f'File {full_path} does not need to be converted')
+                continue
+                
+            if type_f == 'md':
+                fromMd.ConvHtml(full_path, new_path)
+            else:
+                fromXml.ConvMD(full_path, new_path)
+
+
+"""
+   Проверяет правильность введенных данных и
+   вызывает функцию поиска файлов указанного формата
+"""
+def main():
+    
+    args = parser.parse_args()
+    
+    pathFrom = args.directory[0]
+    pathTo = args.directory[0]
+
+    if not os.path.exists(pathFrom):
+        print(f'Object {pathFrom} not found')
+        return
 
     if args.another:
-        old_path = args.directory[0]
-        new_path = args.another[0]
-        path_f = path_f.replace(old_path, new_path)
+        pathTo = args.another[0]
 
-    type_f = 'xml' if type_f == 'md' else 'md'
-    name_f = name_f.split('.')[0] + type_f
-
-    path_f = os.path.join(path_f, name_f)
-    if os.path.exists(path_f):
-        return os.path.getmtime(path_f) < os.path.getmtime(new_f)
-    else:
-        return True
-
-
-def find_files(type_f):
-    path = args.directory[0]
+        if not os.path.exists(pathTo):
+            print(f'Object {pathTo} not found')
+            return
     
-    if os.path.exists(p):
-        for rootdir, dirs, files in os.walk(p):
-            for f in files:       
-                if (f.split('.')[-1]) == type_f:
-                    if readable(f):
-                        if get_change_file(rootdir, f, type_f):
-                            print(os.path.join(rootdir, f))
-                        else:
-                            print(f'File {f} does not need to be converted')
-                    else:
-                        print(f'File {f} cannot be read')
-    else:
-        print(f'Object {p} not found')
+    if (args.xml and args.markdown) or (not args.xml and not args.markdown):
+        print("Enter one type: -x or -m")
+        return
 
-
-def get_type_files():
-
+    pathFrom = pathFrom.replace('/', '\\')
+    pathTo = pathTo.replace('/', '\\')
     if args.xml:
-        find_files('xml')
-    elif args.markdown:
-        find_files('md')
+        find_files(pathFrom, pathTo, 'xml')
     else:
-        print("Enter one type")
+        find_files(pathFrom, pathTo, 'md')
 
 
+"""
+   Проверка, что программа была запущена
+"""
 if __name__ == "__main__":
-    get_type_files()
-
+    main()
