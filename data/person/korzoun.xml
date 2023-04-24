@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="koi8-r"?>
+<person>
+
+<name xml:lang="ru">Корзун Дмитрий Жоржевич</name>
+<name xml:lang="en">Dmitri Korzoun</name>
+
+<interests xml:lang="ru">теория формальных языков и ее приложения, 
+линейный диофантов анализ и его приложения, 
+технология производства программного обеспечения,
+математическое и программное обеспечение вычислительных сетей, 
+анализ производительности узлов Internet</interests>
+
+<interests xml:lang="en">theory of formal languages and its applications, 
+linear Diophantine analysis and its applications, 
+software engineering, software for computer networks, 
+performance analysis of Internet elements</interests>
+
+<position>ст.преп</position>
+<degree>кфмн</degree>
+<staff>прогр.совм</staff>
+<office>главн.423</office>
+
+<login private="private">dkorzun</login>
+<email>dkorzun@cs.karelia.ru</email>
+<email_long>Dmitri.Korzoun@cs.karelia.ru</email_long>
+<photo>/staff/photos/dkorzun.jpg</photo>
+
+</person>
