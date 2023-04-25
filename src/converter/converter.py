@@ -1,4 +1,4 @@
-﻿# -----------------------------------------------------------
+# -----------------------------------------------------------
 # Преобразователь XML->MD->HTML
 #
 # (C) 2023 Alisa Haidarova, PetrGU, Petrozavodsk, Russia
@@ -32,10 +32,10 @@ parser.add_argument('-a', '--another', help='Output directory', nargs=1, require
 
    Parameters
    ----------
-   full_path : str
-         полный путь до исходного файла
-   new_path : str
-         полный путь до преобразованного файла
+   src_path : str
+         исходный путь (включает название файла)
+   dst_path : str
+         путь назначения (включает название файла)
 
    Return
    ----------
@@ -44,11 +44,11 @@ parser.add_argument('-a', '--another', help='Output directory', nargs=1, require
    False : bool
          Если файл не требует преобразования
 """
-def file_changed(full_path, new_path):
+def file_changed(src_path, dst_path):
     
-    if not os.path.exists(new_path):
+    if not os.path.exists(dst_path):
         return True
-    return os.path.getmtime(full_path) > os.path.getmtime(new_path)
+    return os.path.getmtime(src_path) > os.path.getmtime(dst_path)
 
 
 """
@@ -57,32 +57,32 @@ def file_changed(full_path, new_path):
 
    Parameters
    ----------
-   pathFrom : str
+   src_dir : str
          исходная директория
-   pathTo : str
-         директория для сохранения
+   dst_dir : str
+         директория назначения
    type_f : str
          тип файла для преобразования
 """
-def find_files(pathFrom, pathTo, type_f):
+def find_files(src_dir, dst_dir, type_f):
 
-    for rootdir, dirs, files in os.walk(pathFrom):
+    for rootdir, dirs, files in os.walk(src_dir):
         for f in files:       
             if not (f.split('.')[-1]) == type_f:
                 continue
 
-            full_path = os.path.join(rootdir, f)
+            src_path = os.path.join(rootdir, f)
             new_type_f = 'md' if type_f == 'xml' else 'html'
-            new_path = full_path.replace(pathFrom, pathTo).replace(type_f, new_type_f)
+            dst_path = src_path.replace(src_dir, dst_dir).replace(type_f, new_type_f)
 
-            if not file_changed(full_path, new_path):
-                print(f'File {full_path} does not need to be converted')
+            if not file_changed(src_path, dst_path):
+                print(f'File {src_path} does not need to be converted')
                 continue
                 
             if type_f == 'md':
-                fromMd.ConvHtml(full_path, new_path)
+                fromMd.ConvHtml(src_path, dst_path)
             else:
-                fromXml.ConvMD(full_path, new_path)
+                fromXml.ConvMD(src_path, dst_path)
 
 
 """
@@ -93,30 +93,30 @@ def main():
     
     args = parser.parse_args()
     
-    pathFrom = args.directory[0]
-    pathTo = args.directory[0]
+    src_dir = args.directory[0]
+    dst_dir = args.directory[0]
 
-    if not os.path.exists(pathFrom):
-        print(f'Object {pathFrom} not found')
+    if not os.path.exists(src_dir):
+        print(f'Object {src_dir} not found')
         return
 
     if args.another:
-        pathTo = args.another[0]
+        dst_dir = args.another[0]
 
-        if not os.path.exists(pathTo):
-            print(f'Object {pathTo} not found')
+        if not os.path.exists(dst_dir):
+            print(f'Object {dst_dir} not found')
             return
     
     if (args.xml and args.markdown) or (not args.xml and not args.markdown):
         print("Enter one type: -x or -m")
         return
 
-    pathFrom = pathFrom.replace('/', '\\')
-    pathTo = pathTo.replace('/', '\\')
+    src_dir = src_dir.replace('/', '\\')
+    dst_dir = dst_dir.replace('/', '\\')
     if args.xml:
-        find_files(pathFrom, pathTo, 'xml')
+        find_files(src_dir, dst_dir, 'xml')
     else:
-        find_files(pathFrom, pathTo, 'md')
+        find_files(src_dir, dst_dir, 'md')
 
 
 """
