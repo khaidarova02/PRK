@@ -2,6 +2,9 @@ import markdown
 import os
 
 def ConvHtml(full_path, new_path): 
+    if not os.access(full_path, os.R_OK): 
+        print("Недостаточно прав для чтения файла")
+        return
     # Читая sample.md и сохранение его содержимого в переменной markdown_string
     with open(full_path, 'r') as f:
         markdown_string = f.read()
