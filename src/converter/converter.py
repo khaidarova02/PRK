@@ -26,46 +26,44 @@ parser.add_argument('-m', '--markdown', help='File type', action='store_true', r
 parser.add_argument('-a', '--another', help='Output directory', nargs=1, required=False)
 
 
-"""
-   Сравненивает даты последнего изменения исходного файла 
-   и преобразованного, если тот существует
-
-   Parameters
-   ----------
-   src_path : str
-         исходный путь (включает название файла)
-   dst_path : str
-         путь назначения (включает название файла)
-
-   Return
-   ----------
-   True : bool
-         Если файл требует преобразования
-   False : bool
-         Если файл не требует преобразования
-"""
 def file_changed(src_path, dst_path):
-    
+    """
+       Сравненивает даты последнего изменения исходного файла 
+       и преобразованного, если тот существует
+
+       Parameters
+       ----------
+       src_path : str
+             исходный путь (включает название файла)
+       dst_path : str
+             путь назначения (включает название файла)
+
+       Return
+       ----------
+       True : bool
+             Если файл требует преобразования
+       False : bool
+             Если файл не требует преобразования
+    """
     if not os.path.exists(dst_path):
         return True
     return os.path.getmtime(src_path) > os.path.getmtime(dst_path)
 
 
-"""
-   Перебирает исходную директорию и передает файлы
-   указанного формата в соответствующий модуль преобразования
-
-   Parameters
-   ----------
-   src_dir : str
-         исходная директория
-   dst_dir : str
-         директория назначения
-   type_f : str
-         тип файла для преобразования
-"""
 def find_files(src_dir, dst_dir, type_f):
+    """
+       Перебирает исходную директорию и передает файлы
+       указанного формата в соответствующий модуль преобразования
 
+       Parameters
+       ----------
+       src_dir : str
+             исходная директория
+       dst_dir : str
+             директория назначения
+       type_f : str
+             тип файла для преобразования
+    """
     for rootdir, dirs, files in os.walk(src_dir):
         for f in files:       
             if not (f.split('.')[-1]) == type_f:
@@ -74,6 +72,10 @@ def find_files(src_dir, dst_dir, type_f):
             src_path = os.path.join(rootdir, f)
             new_type_f = 'md' if type_f == 'xml' else 'html'
             dst_path = src_path.replace(src_dir, dst_dir).replace(type_f, new_type_f)
+            
+            new_dir = rootdir.replace(src_dir, dst_dir)
+            if not os.path.exists(new_dir):
+                os.makedirs(new_dir)
 
             if not file_changed(src_path, dst_path):
                 print(f'File {src_path} does not need to be converted')
@@ -82,14 +84,14 @@ def find_files(src_dir, dst_dir, type_f):
             if type_f == 'md':
                 fromMd.ConvHtml(src_path, dst_path)
             else:
-                fromXml.ConvMD(src_path, dst_path)
+                fromXml.Conv_MD(src_path, dst_path)
 
 
-"""
-   Проверяет правильность введенных данных и
-   вызывает функцию поиска файлов указанного формата
-"""
 def main():
+    """
+       Проверяет правильность введенных данных и
+       вызывает функцию поиска файлов указанного формата
+    """
     
     args = parser.parse_args()
     
