@@ -10,7 +10,7 @@ def Conv_MD(full_path, new_path):
             data_dict = xmltodict.parse(xml_file.read())
 
         # Создаем и открываем Markdown-файл для записи
-        with open(new_path, 'w', encoding="utf8") as md_file:
+        with io.open(new_path, 'w', encoding="utf8") as md_file:
             # Проходимся по элементам словаря и записываем соответствующие строки в Markdown-файл
             for key in data_dict:
                 md_file.write(f"# {key}\n\n") # Заголовок наименования элемента
