@@ -15,6 +15,6 @@ def Conv_MD(full_path, new_path):
                 md_file.write(f"# {key}\n\n") # Заголовок наименования элемента
                 for subkey, subvalue in data_dict[key].items():
                     md_file.write(f"**{subkey}:** {subvalue}\n") #Строка с наименованием и значением
-        md_file.write("\n") # Добавляем пустую строку
+                md_file.write("\n") # Добавляем пустую строку
     else:
         print("Недостаточно прав для чтения файла")
