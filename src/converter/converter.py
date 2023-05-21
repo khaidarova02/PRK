@@ -28,7 +28,7 @@ parser.add_argument('-a', '--another', help='Output directory', nargs=1, require
 
 def file_changed(src_path, dst_path):
     """
-       Сравненивает даты последнего изменения исходного файла 
+       Сравнивает даты последнего изменения исходного файла 
        и преобразованного, если тот существует
 
        Parameters
@@ -47,7 +47,7 @@ def file_changed(src_path, dst_path):
     """
     if not os.path.exists(dst_path):
         return True
-    return os.path.getmtime(src_path) > os.path.getmtime(dst_path)
+    return os.path.getmtime(src_path) > os.path.getmtime(dst_path) or os.path.getmtime("header.html") > os.path.getmtime(dst_path)
 
 
 def find_files(src_dir, dst_dir, type_f):
@@ -82,7 +82,7 @@ def find_files(src_dir, dst_dir, type_f):
                 continue
                 
             if type_f == 'md':
-                fromMd.ConvHtml(src_path, dst_path)
+                fromMd.convHtml(src_path, dst_path)
             else:
                 fromXml.Conv_MD(src_path, dst_path)
 
