@@ -1,4 +1,5 @@
 import markdown
+import markdownify
 import io
 
 def Conv_MD(full_path, new_path):
@@ -13,6 +14,7 @@ def Conv_MD(full_path, new_path):
         else:
             # Конвертируем в markdown
             output_string = markdown.markdown(input_string)
+            output_string = markdownify.markdownify(output_string)
             #Записываем в файл
             with io.open(new_path, 'w', encoding="utf-8") as f:
                 f.write(output_string)
